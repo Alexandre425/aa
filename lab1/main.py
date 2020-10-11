@@ -1,9 +1,14 @@
 import numpy as np
 from matplotlib import pyplot as plt
+from sklearn import linear_model as linmod
+
 
 # Generates the polinomial X matrix for a training set x and the order
-def X_matrix(x, order):
+def X_matrixPoly(x, order):
     return np.array([[x[l]**p for p in range(order+1)] for l in range(np.shape(x)[0])])
+
+def X_matrixLinear(x):
+    return np.array([np.array([1] + [_x for _x in x[l]]) for l in range(np.shape(x)[0])])
 
 # Calculates a list of predictions of a polinomial model based on a list of input data
 def polinomialModel(x, Beta):
@@ -32,7 +37,7 @@ def loadFitAndPlot(x_file, y_file, order):
     # Workaround to one of the files being (50,) instead of (50,1)
     if (len(y.shape) == 1):
         y = np.array([[_y] for _y in y])
-    X = X_matrix(x_list, order)
+    X = X_matrixPoly(x_list, order)
     # Calculate the parameters through the normal equation
     Beta = np.dot(np.linalg.inv(np.dot(X.T, X)), np.dot(X.T, y))
     Beta_list = [_[0] for _ in Beta]
@@ -46,6 +51,48 @@ def loadFitAndPlot(x_file, y_file, order):
     plt.plot(x_list, polinomialModel(x_list, Beta_list))
     plt.title("Data from " + x_file)
     plt.show()
+
+def loadRidgeAndLasso(x_file, y_file):
+    x = np.load(x_file)
+    y = np.load(y_file)
+    a = np.linspace(1e-3, 10, 1000)
+
+    least_squares = linmod.LinearRegression()
+    least_squares.fit(x, y)
+    ls_coefs = np.array(least_squares.coef_)
+    print(ls_coefs)
+
+    coefs = []
+    for _a in a:
+        ridge = linmod.Ridge(alpha=_a, max_iter=10000)
+        ridge.fit(x, y)
+        coefs.append(ridge.coef_[0])
+    ridge_coefs = np.array(coefs)
+
+    coefs = []
+    for _a in a:
+        lasso = linmod.Lasso(alpha=_a, max_iter=10000)
+        lasso.fit(x, y)
+        coefs.append(lasso.coef_)
+    lasso_coefs = np.array(coefs)
+
+
+    [plt.scatter(a, ridge_coefs[:,c]) for c in range(ridge_coefs.shape[1])]
+    plt.xscale("log")
+    plt.xlim(1e-3, 10)
+    plt.title("Ridge regression")
+    plt.xlabel("a")
+    plt.ylabel("Coefficients")
+    plt.show()
+
+    [plt.scatter(a, lasso_coefs[:,c]) for c in range(lasso_coefs.shape[1])]
+    plt.xscale("log")
+    plt.xlim(1e-3, 10)
+    plt.title("Lasso regression")
+    plt.xlabel("a")
+    plt.ylabel("Coefficients")
+    plt.show() 
+    
 
 if __name__ == "__main__":
     ### Exercise 2.1
@@ -90,7 +137,6 @@ if __name__ == "__main__":
     #   with a significant error, the curve being above the inliers significantly.
     #   In layman's terms, it can be said that the two outliers above the wave "pulled"
     #   the model closer to them and away from the inliers.
-    #   
     # It can also be explained mathematically, due to the fact the method gives greater
     #   "importance" to outliers, as the error of those particular data points is high,
     #   which when squared becomes even higher, and thus have more influence on the model.
@@ -118,7 +164,5 @@ if __name__ == "__main__":
     #   their value, while the former has "diminishing returns" for small coefficients,
     #   meaning it will reduce the length of the vector in general, but generally doesn't
     #   eliminate coefficients completely, and as such doesn't select for features as well.
-    #
-
-
-    loadFitAndPlot("data/data3_x.npy", "data/data3_y.npy", 1)
+    
+    loadRidgeAndLasso("data/data3_x.npy", "data/data3_y.npy")
