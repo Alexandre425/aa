@@ -1,6 +1,7 @@
 import numpy as np
 from matplotlib import pyplot as plt
 from sklearn import linear_model as linmod
+from sklearn import metrics as met
 
 
 # Generates the polinomial X matrix for a training set x and the order
@@ -60,7 +61,6 @@ def loadRidgeAndLasso(x_file, y_file):
     least_squares = linmod.LinearRegression()
     least_squares.fit(x, y)
     ls_coefs = np.array(least_squares.coef_)
-    print(ls_coefs)
 
     coefs = []
     for _a in a:
@@ -77,20 +77,48 @@ def loadRidgeAndLasso(x_file, y_file):
     lasso_coefs = np.array(coefs)
 
 
-    [plt.scatter(a, ridge_coefs[:,c]) for c in range(ridge_coefs.shape[1])]
+    [plt.hlines(c, 0, 10) for c in ls_coefs]
+    [plt.scatter(a, ridge_coefs[:,c], label=f"Coef {c+1}") for c in range(ridge_coefs.shape[1])]
     plt.xscale("log")
     plt.xlim(1e-3, 10)
     plt.title("Ridge regression")
     plt.xlabel("a")
     plt.ylabel("Coefficients")
+    plt.legend()
     plt.show()
 
-    [plt.scatter(a, lasso_coefs[:,c]) for c in range(lasso_coefs.shape[1])]
+    [plt.hlines(c, 0, 10) for c in ls_coefs]
+    [plt.scatter(a, lasso_coefs[:,c], label=f"Coef {c+1}") for c in range(lasso_coefs.shape[1])]
     plt.xscale("log")
     plt.xlim(1e-3, 10)
     plt.title("Lasso regression")
     plt.xlabel("a")
     plt.ylabel("Coefficients")
+    plt.legend()
+    plt.show() 
+
+    a = 0.071   # first lambda that removes the irrelevant coefficient altogether
+    lasso = linmod.Lasso(alpha=a, max_iter=10000)
+    lasso.fit(x, y)
+    y_pred = lasso.predict(x)
+    y_pred_ls = least_squares.predict(x)
+    # Sorting both according to one so the data is readable
+    y_list = [y[i][0] for i in range(y.shape[0])]
+    yp_list = [y_pred[i] for i in range(y_pred.shape[0])]
+    yp_list_ls = [y_pred_ls[i] for i in range(y_pred_ls.shape[0])]
+    y_list, yp_list, yp_list_ls = zip(*sorted(zip(y_list, yp_list, yp_list_ls)))
+    y = np.array(y_list)
+    y_pred = np.array(yp_list)
+    y_pred_ls = np.array(yp_list_ls)
+    print(f"Lasso SSE: {met.mean_squared_error(y, y_pred)*y.shape[0]}")
+    print(f"LS SSE: {met.mean_squared_error(y, y_pred_ls)*y.shape[0]}")
+    plt.scatter(range(y.shape[0]), y, label="Training Data")
+    plt.scatter(range(y_pred.shape[0]), y_pred, label="Lasso prediction")
+    plt.scatter(range(y_pred_ls.shape[0]), y_pred_ls, label="LS prediction")
+    plt.title("Lasso model prediction")
+    plt.xlabel("Data point")
+    plt.ylabel("Prediction")
+    plt.legend()
     plt.show() 
     
 
@@ -166,3 +194,24 @@ if __name__ == "__main__":
     #   eliminate coefficients completely, and as such doesn't select for features as well.
     
     loadRidgeAndLasso("data/data3_x.npy", "data/data3_y.npy")
+
+    ## 6)
+    # The results match the what was previously stated, with lasso regression quickly 
+    #   selecting for the relevant features. The first feature whose coefficient
+    #   was nullified first was the second, meaning it is the irrelevant feature.
+    # Another thing to note is that the coefficients of the two methods are identical
+    #   to the coefficients of the least squares method when lambda (or a) is zero,
+    #   which makes sense from a mathematical standpoint, as it nullifies the second term
+    #   of the minimizer, making it identical to the sum of squared errors.
+
+    ## 7)
+    # The chosen value for lambda/alpha is 0.071, which is the first value shown to 
+    #   nullify the irrelevant term completely. 
+    # The lasso method has a slightly larger squared error, which is natural seeing as
+    #   how the alpha also influences the other coefficients, making them smaller, but also
+    #   making the model less accurate as a result. Still, the difference in SSE is negligible,
+    #   especially when compared to the computational power the lasso method saves when
+    #   predicting. Seeing as how one of the coefficients was completely nullified, the
+    #   processing power required to compute the prediction goes down by one third, since
+    #   one of the three features is ignored. This would have a significant advantage if the 
+    #   model had to be applied a large number of times, like is often the case.
