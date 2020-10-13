@@ -1,0 +1,113 @@
+\documentclass[a4paper,2pt]{report}
+
+\usepackage[a4paper, total={6in, 9in}]{geometry}
+\usepackage[table,xcdraw]{xcolor}
+\usepackage{pdfpages}
+\usepackage{indentfirst}
+\usepackage{mathtools}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{subfig}
+
+\graphicspath{ {./img/} }
+
+
+\setlength{\parskip}{6pt}
+
+\begin{document}
+
+\begin{titlepage}
+    \begin{center}
+        \vspace*{3cm}
+ 
+        \LARGE
+        \textbf{Instituto Superior Técnico}
+        \vskip 0.4cm
+ 
+        \Large{MEEC}
+        \vskip 0.2cm
+
+        \Large{Machine Learning}
+        \vskip 3cm
+        
+
+ 
+        \Huge{\textbf{Lab 1}}
+        \vskip 0.5cm
+
+        \huge{\textbf{Linear Regression}}
+        \vskip 0.5cm
+
+ 
+        \vfill
+ 
+        \large
+        \textbf{Group 9}\\
+        \vspace{0.3cm}
+        Alexandre Rodrigues, 90002\\
+        
+        \vspace{1cm}
+
+        \textbf{Turno:} 4ªf 17h30
+
+    \end{center}
+\end{titlepage}
+
+\tableofcontents
+\newpage
+
+\setcounter{chapter}{1}
+\section{Matrix expressions}
+
+    \par The \textit{Least Squares} method relies on minimizing the sum of squared errors of a given model:
+    \begin{equation}
+        \textit{SSE} = ||y - X\beta||^2
+    \end{equation}
+
+    \par Where \textit{X} is a matrix defined, in this case, by:
+    \begin{equation}
+        \begin{bmatrix}
+            1 & x_1^1 & \textit{...} & x_1^p\\
+            \textit{...} & \textit{...} & \textit{...} & \textit{...}\\
+            1 & x_n^1 & \textit{...} & x_n^p
+        \end{bmatrix}
+    \end{equation}
+
+    \par Since we are working with a polinomial model who's dataset has \textit{n} elements and is of order \textit{p}.
+    \par By calculating the zero of the gradient of the \textit{SSE}, it is possible to analytically solve the model, through the normal equation:
+    \begin{align*}
+        (X^T X)\beta = X^T y\\
+        \beta = (X^T X)^{-1} X^T y
+    \end{align*}
+    \par Thus obtaining the coefficients of the model.
+
+\section{Least Squares fitting}
+    \par For files 1 and 2, the models fits the data quite accurately. They also ignore the noise effectively because of the low order of the polynomials, with no signs of overfitting.
+    \par As for 2a, the model fits the data with decent accuracy. The inlier-only SSE is significantly larger than the one of the previous case. Seeing as both of them have the same data with the exception of the outliers, we can infer that the high sensitivity of the LS method to outliers was what caused the increase in \textit{SSE} for the inliers. 
+    \par It is also possible to view the effect of the outliers through the plot. The model follows the part of the wave with a negative slope with a significant error, the curve being above the inliers significantly. In layman's terms, it can be said that the two outliers above the wave "pulled" the fit closer to them, and away from the inliers.
+    \par It can also be explained mathematically, due to the fact the method gives greater "importance" to outliers, as the those points contribute to the cost function with a large error, which is then squared.
+
+\section{Ridge regression and Lasso regression}
+
+    \par Ridge regression is a form of regression which has a regularization term, which penalizes coeficients with large values, a way of preventing overfitting and selecting for relevant features. It is simmilar to the LS method, with it's optimization function being given by the following expression:
+    \begin{equation}
+        min(SSE + \lambda||\beta||^2)
+    \end{equation}
+    \par The first term being the SSE, and the second the regularization term. A large coefficient vector leads to a large cost function, which is contrary to the objective of the algorithm, which is to minimize it.
+
+    \par Lasso regression is simmilar, but uses a different regularization term, given by: 
+    \begin{equation}
+        \lambda||\beta||_1^2
+    \end{equation}
+    \par Where the norm is the \textit{l1} norm, a simple sum of the absolute values of the coefficients.
+
+    \par This forces the sum of the coefficients to be below a certain value, directly related to \(\lambda\), which then forces some of the coefficients to be zero if \(\lambda\) is sufficiently large. It is superior at feature selection when compared to ridge regression, as it reduces the absolute value of the coefficients equally and independently of their value. The former has "diminishing returns" for small coefficients, meaning it will reduce the length of the coefficient vector, but generally doesn't eliminate coefficients entirely. As such, ridge regression doesn't select for features as well.
+
+    \par Relating to file 3, the results match the what was previously stated, with lasso regression quickly selecting for the relevant features. The feature who's coefficient was nullified first was the second, meaning it is the irrelevant feature.
+    \par Another thing to note is that the coefficients of the two methods are identical to the coefficients of the least squares method when \(\lambda\) is zero. This makes sense from a mathematical standpoint, as it nullifies the second term of the cost function, making it identical to the sum of squared errors.
+
+    \par Now considering only lasso regression, the chosen value for \(\lambda\) is 0.071, which is the first value shown to nullify the irrelevant term completely.
+    \par The lasso method results in a slightly larger squared error when compared to the least squares method, which is natural seeing as how the \(\lambda\) term also influences the other coefficients, making them smaller, but also making the model less accurate as a result. Still, the difference in \textit{SSE} is negligible, especially when compared to the computational power the lasso method saves when predicting. Seeing as how one of the coefficients was completely nullified, the processing power required to compute the prediction goes down by one third, as one of the three features is ignored. This would have a significant advantage if the model had to be applied a large number of times, like is often the case.
+
+
+\end{document}

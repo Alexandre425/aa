@@ -1,0 +1,3 @@
+\contentsline {section}{\numberline {1.1}Matrix expressions}{2}%
+\contentsline {section}{\numberline {1.2}Least Squares fitting}{2}%
+\contentsline {section}{\numberline {1.3}Ridge regression and Lasso regression}{2}%
