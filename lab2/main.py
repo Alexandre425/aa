@@ -117,7 +117,7 @@ x_min = quad2(anim = 1)
 print('The estimated value is %s' %(x_min))
 
 print('****STARTING PART 2 WITH MOMENTUM****')
-x_min = quad2(a=20.0,eta=0.3,anim = 0,alpha=0)
+x_min = quad2(a=20.0,eta=0.8,anim = 1,alpha=0.7)
 print('The estimated value is %s' %(x_min))
 
 def rosen(x_o=[-1.5,1.0],a=20.0,eta=0.001,threshold=0.001,maxiter=1000,alpha=0.0,anim = 1,up = 1,down = 1,reduce = 1):
@@ -234,5 +234,5 @@ def rosen(x_o=[-1.5,1.0],a=20.0,eta=0.001,threshold=0.001,maxiter=1000,alpha=0.0
         return x_o
     
 print('****STARTING Rosenbrock****')
-x_min = rosen(x_o=[-1.5,1.0],a=20.0,eta=0.001,threshold=.001,maxiter=1000,alpha=0,anim = 1,up = 1,down = 1,reduce = 1)
+x_min = rosen(x_o=[-1.5,1.0],a=20.0,eta=0.1,threshold=.001,maxiter=1000,alpha=0.9,anim = 1,up = 1,down = 1,reduce = 1)
 print('The estimated value is %s' %(x_min))
