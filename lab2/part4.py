@@ -133,3 +133,23 @@ if __name__ == "__main__":
             else:
                 string = "Diverged!"
             print(f"eta: {e}, alpha: {a} ->" + string)
+
+    print("Searching for <500")
+    eta = (0,.0230, 0.0256, 0.0283)
+    alpha = (0.9487,)
+    for e in eta:
+        for a in alpha:
+            conv, iters = rosen(x_o=[-1.5,1.0],a=100,eta=e,threshold=.001,maxiter=1000,alpha=a,anim = 0,up = 1,down = 1,reduce = 1)
+            if conv:
+                string = f"{iters} iterations"
+                print(f"eta: {e}, alpha: {a} ->" + string)
+
+    print("Searching for <500")
+    eta = (0.2000, 0.2222, 0.2444)
+    alpha = (0.8888, )
+    for e in eta:
+        for a in alpha:
+            conv, iters = rosen(x_o=[-1.5,1.0],a=100,eta=e,threshold=.001,maxiter=1000,alpha=a,anim = 0,up = 1.1, down = 0.9, reduce = 0.5)
+            if conv:
+                string = f"{iters} iterations"
+                print(f"eta: {e}, alpha: {a} ->" + string)
