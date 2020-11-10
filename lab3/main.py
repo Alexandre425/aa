@@ -72,10 +72,21 @@ if __name__ == "__main__":
 
         callbacks = [
             keras.callbacks.EarlyStopping(monitor="loss", patience=10, restore_best_weights=True),
-            keras.callbacks.ModelCheckpoint("CNN", monitor="loss")
+            keras.callbacks.ModelCheckpoint("CNN", monitor="loss"),
+            keras.callbacks.History()
         ]
         print(model.summary())
-        model.fit(x=train_x, y=train_y, batch_size=200, epochs=200, callbacks=callbacks)
+        # Train the model
+        history = model.fit(x=train_x, y=train_y, batch_size=200, epochs=2, callbacks=callbacks)
+        # Open the loss history file
+        try:
+            loss_hist = np.loadtxt("cnn_history")
+        except:
+            loss_hist = np.array([])
+        # Append the new loss values and write the file
+        loss_hist.append(history.history["loss"])
+        np.savetxt("cnn_history", loss_hist)
+
 
     elif (ans == "e"):
         model = keras.models.load_model("CNN")
