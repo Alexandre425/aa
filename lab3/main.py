@@ -67,17 +67,17 @@ if __name__ == "__main__":
             model.compile(
                 optimizer='adam',
                 loss='categorical_crossentropy',
-                metrics='categorical_crossentropy'
+                metrics=['val_loss', 'loss'],
             )
 
         callbacks = [
-            keras.callbacks.EarlyStopping(monitor="loss", patience=10, restore_best_weights=True),
+            keras.callbacks.EarlyStopping(monitor="val_loss", patience=10, restore_best_weights=True),
             keras.callbacks.ModelCheckpoint("CNN", monitor="loss"),
             keras.callbacks.History()
         ]
         print(model.summary())
         # Train the model
-        history = model.fit(x=train_x, y=train_y, batch_size=200, epochs=2, callbacks=callbacks)
+        history = model.fit(x=train_x, y=train_y, batch_size=200, epochs=2, validation_data=(test_x, test_y), callbacks=callbacks)
         # Open the loss history file
         try:
             loss_hist = np.loadtxt("cnn_history")
