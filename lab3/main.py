@@ -84,7 +84,7 @@ if __name__ == "__main__":
         except:
             loss_hist = np.array([])
         # Append the new loss values and write the file
-        loss_hist.append(history.history["loss"])
+        loss_hist = np.append(loss_hist, history.history["loss"])
         np.savetxt("cnn_history", loss_hist)
 
 
