@@ -31,6 +31,13 @@ if __name__ == "__main__":
         np.save(FILE_TEST_X, test_x)
         np.save(FILE_TEST_Y, test_y)
 
-    print(test_y)
+    #######
+    # MLP #
+    #######
 
+    #######
+    # CNN #
+    #######
+
+    
     
