@@ -67,24 +67,26 @@ if __name__ == "__main__":
             model.compile(
                 optimizer='adam',
                 loss='categorical_crossentropy',
-                metrics=['val_loss', 'loss'],
+                metrics='categorical_crossentropy'
             )
 
         callbacks = [
+            # Early stopping monitors validation loss, so that it stops if the model is becoming overfit
             keras.callbacks.EarlyStopping(monitor="val_loss", patience=10, restore_best_weights=True),
             keras.callbacks.ModelCheckpoint("CNN", monitor="loss"),
             keras.callbacks.History()
         ]
         print(model.summary())
         # Train the model
-        history = model.fit(x=train_x, y=train_y, batch_size=200, epochs=2, validation_data=(test_x, test_y), callbacks=callbacks)
+        history = model.fit(x=train_x, y=train_y, batch_size=200, epochs=200, validation_data=(test_x, test_y), callbacks=callbacks)
+
         # Open the loss history file
         try:
             loss_hist = np.loadtxt("cnn_history")
         except:
-            loss_hist = np.array([])
+            loss_hist = np.empty((2,))
         # Append the new loss values and write the file
-        loss_hist = np.append(loss_hist, history.history["loss"])
+        loss_hist = np.array([np.append(loss_hist[0], history.history["loss"]), np.append(loss_hist[1], history.history["val_loss"])])
         np.savetxt("cnn_history", loss_hist)
 
 
