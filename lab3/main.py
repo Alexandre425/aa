@@ -1,4 +1,5 @@
 from tensorflow.keras.datasets import fashion_mnist as fmds
+from tensorflow import keras as keras
 import numpy as np
 from matplotlib import pyplot as plt
 
@@ -10,6 +11,7 @@ if __name__ == "__main__":
 
     plt.imshow(img)
     plt.show()
-
-    print(new_img)
+    one_hot = keras.utils.to_categorical(dataset[0][1][0], num_classes=9)
+    print(one_hot)
+    print(dataset[0][1][0])
     
