@@ -46,6 +46,31 @@ if __name__ == "__main__":
 
     print(train_x.shape)
 
+    # Declare the model and all it's layers
     model = keras.models.Sequential([
-        ly.Conv2D(filters=16, kernel_size=3)
+        ly.Conv2D(filters=16, kernel_size=3, input_shape=(28,28,1)),
+        ly.MaxPool2D(pool_size=2),
+        ly.Conv2D(filters=16, kernel_size=3),
+        ly.MaxPool2D(pool_size=2),
+        ly.Flatten(),
+        ly.Dense(units=32, activation='relu'), 
+        ly.Dense(units=10, activation='softmax')
     ])
+    try:    # Try loading the model
+        model = keras.models.load_model("CNN")
+        print("Loaded model from memory")
+    except: # If there is no model in memory
+        print("Cannot find model, compiling")
+        # Compile the model with an apropriate optimizer and loss function
+        model.compile(
+            optimizer='adam',
+            loss='categorical_crossentropy',
+            metrics='categorical_crossentropy'
+        )
+
+    callbacks = [
+        keras.callbacks.EarlyStopping(monitor="loss", patience=10, restore_best_weights=True),
+        keras.callbacks.ModelCheckpoint("CNN", monitor="loss")
+    ]
+    print(model.summary())
+    model.fit(x=train_x, y=train_y, batch_size=200, epochs=200, callbacks=callbacks)
