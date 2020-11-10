@@ -24,13 +24,12 @@ if __name__ == "__main__":
         train_x = np.array([[[c / 255 for c in l] for l in img] for img in data_train[0]])
         test_x  = np.array([[[c / 255 for c in l] for l in img] for img in data_test[0]])
         # Convert the output data to one-hot encoding
-        train_y = np.array([keras.utils.to_categorical(y, num_classes=9) for y in data_train[1]])
-        test_y  = np.array([keras.utils.to_categorical(y, num_classes=9) for y in data_test[1]])
+        train_y = np.array([keras.utils.to_categorical(y, num_classes=10) for y in data_train[1]])
+        test_y  = np.array([keras.utils.to_categorical(y, num_classes=10) for y in data_test[1]])
         np.save(FILE_TRAIN_X, train_x)
         np.save(FILE_TRAIN_Y, train_y)
         np.save(FILE_TEST_X, test_x)
         np.save(FILE_TEST_Y, test_y)
-    
 
     print(test_y)
 
