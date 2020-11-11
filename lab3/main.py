@@ -4,6 +4,7 @@ from tensorflow.keras import layers as ly
 import numpy as np
 from matplotlib import pyplot as plt
 from visualize_activations import visualize_activations
+from sklearn import metrics as met
 
 FILE_TRAIN_X = "train_x.npy"
 FILE_TRAIN_Y = "train_y.npy"
@@ -116,12 +117,16 @@ if __name__ == "__main__":
         )
         # Evaluate and extract the validation loss, plotting it
         val = model.evaluate(x=test_x, y=test_y)
+        pred = model.predict(test_x)
         plt.hlines(val[0], epochs[0], epochs[-1], label="Best val. loss")
         plt.xlabel("Epoch")
         plt.ylabel("Metric")
         plt.title("Evolution of the metrics through epochs")
         plt.legend()
         plt.show()
+
+        conf_matrix = met.confusion_matrix(y_true=test_y.argmax(axis=1), y_pred=pred.argmax(axis=1))
+        print(conf_matrix)
 
         # Plot the activation for an example image
         test_img = np.reshape(test_x[9], (28,28))
