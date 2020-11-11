@@ -62,7 +62,11 @@ if __name__ == "__main__":
         try:    # Try loading the model
             model = keras.models.load_model("CNN")
             print("Loaded model from memory")
-            
+            model.compile(
+                optimizer='adam',
+                loss='categorical_crossentropy',
+                metrics=['categorical_crossentropy', 'accuracy']
+            )   
         except: # If there is no model in memory
             print("Cannot find model, compiling")
             # Compile the model with an apropriate optimizer and loss function
@@ -86,9 +90,13 @@ if __name__ == "__main__":
         try:
             loss_hist = np.loadtxt("cnn_history")
         except:
-            loss_hist = np.empty((2,))
+            loss_hist = np.empty((3,))
         # Append the new loss values and write the file
-        loss_hist = np.array([np.append(loss_hist[0], history.history["loss"]), np.append(loss_hist[1], history.history["val_loss"])])
+        loss_hist = np.array([
+            np.append(loss_hist[0], history.history["loss"]), 
+            np.append(loss_hist[1], history.history["val_loss"]),
+            np.append(loss_hist[2], history.history["val_accuracy"]),
+        ])
         np.savetxt("cnn_history", loss_hist)
 
 
