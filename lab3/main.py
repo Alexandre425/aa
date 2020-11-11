@@ -38,109 +38,110 @@ if __name__ == "__main__":
 
     print("Data loaded")
 
-    #######
-    # MLP #
-    #######
+    if (input("Run MLP? (y/n) ") == "y"):
+        #######
+        # MLP #
+        #######
 
-    model_mlp = keras.Sequential([
-        keras.layers.Flatten(input_shape=(28,28,1)),
-        keras.layers.Dense(32, activation="relu"),
-        keras.layers.Dense(64, activation="relu"),
-        keras.layers.Dense(10, activation="softmax"),
-    ])
+        model_mlp = keras.Sequential([
+            keras.layers.Flatten(input_shape=(28,28,1)),
+            keras.layers.Dense(32, activation="relu"),
+            keras.layers.Dense(64, activation="relu"),
+            keras.layers.Dense(10, activation="softmax"),
+        ])
 
-    model_mlp.summary()
-
-
-
-        ## WITH EARLYSTOPPING ##
+        model_mlp.summary()
 
 
 
-    EarlyStopping_mlp = keras.callbacks.EarlyStopping(patience = 10, restore_best_weights = True)
-
-    # Compile the model.
-    model_mlp.compile(
-        optimizer= keras.optimizers.Adam(lr = 0.001, clipnorm = 1),
-        loss="categorical_crossentropy",
-        metrics=["acc"],
-    )
-
-    # Train the model.
-    mlp_fit = model_mlp.fit(
-        train_x,
-        train_y,
-        validation_data = (test_x, test_y),
-        epochs = 200,
-        batch_size = 200,
-        callbacks = [EarlyStopping_mlp],
-    )
-
-    plt.figure()
-    plt.plot(mlp_fit.history['loss'], label = 'Training')
-    plt.plot(mlp_fit.history['val_loss'], label = 'Validation')
-    plt.title('MLP with Early Stopping')
-    plt.xlabel('Epochs')
-    plt.ylabel('Loss')
-    plt.legend()
-    plt.show()
-
-    # Predict
-    predictions = np.argmax(model_mlp.predict(test_x), axis=1)
-
-    # Accuracy and Confusion Matrix
-    acc = mlp_fit.history['acc'][-1]
-    print('\n MLP with Early Stopping: ')
-    print("\n")
-    print('accuracy = ', acc)
-    confusion_matrix_mlp = c_m(test_y.argmax(axis=1), predictions)
-    print("\n")
-    print('confusion_matrix = \n', confusion_matrix_mlp)
+            ## WITH EARLYSTOPPING ##
 
 
 
-        ## WITHOUT EARLYSTOPPING ##
+        EarlyStopping_mlp = keras.callbacks.EarlyStopping(patience = 10, restore_best_weights = True)
+
+        # Compile the model.
+        model_mlp.compile(
+            optimizer= keras.optimizers.Adam(lr = 0.001, clipnorm = 1),
+            loss="categorical_crossentropy",
+            metrics=["acc"],
+        )
+
+        # Train the model.
+        mlp_fit = model_mlp.fit(
+            train_x,
+            train_y,
+            validation_data = (test_x, test_y),
+            epochs = 200,
+            batch_size = 200,
+            callbacks = [EarlyStopping_mlp],
+        )
+
+        plt.figure()
+        plt.plot(mlp_fit.history['loss'], label = 'Training')
+        plt.plot(mlp_fit.history['val_loss'], label = 'Validation')
+        plt.title('MLP with Early Stopping')
+        plt.xlabel('Epochs')
+        plt.ylabel('Loss')
+        plt.legend()
+        plt.show()
+
+        # Predict
+        predictions = np.argmax(model_mlp.predict(test_x), axis=1)
+        # Evaluate
+        val = model_mlp.evaluate(x=test_x, y=test_y)
+        # Accuracy and Confusion Matrix
+        acc = val[1]
+        print('\n MLP with Early Stopping: ')
+        print("\n")
+        print('accuracy = ', acc)
+        confusion_matrix_mlp = met.confusion_matrix(test_y.argmax(axis=1), predictions)
+        print("\n")
+        print('confusion_matrix = \n', confusion_matrix_mlp)
 
 
 
-    # Compile the model.
-    model_mlp.compile(
-        optimizer= keras.optimizers.Adam(lr = 0.001, clipnorm = 1),
-        loss="categorical_crossentropy",
-        metrics=["acc"],
-    )
-
-    # Train the model.
-    mlp_fit = model_mlp.fit(
-        train_x,
-        train_y,
-        validation_data = (test_x, test_y),
-        epochs = 200,
-        batch_size = 200,
-    )
-
-    plt.figure()
-    plt.plot(mlp_fit.history['loss'], label = 'Training')
-    plt.plot(mlp_fit.history['val_loss'], label = 'Validation')
-    plt.title('MLP with Early Stopping')
-    plt.xlabel('Epochs')
-    plt.ylabel('Loss')
-    plt.legend()
-    plt.show()
-
-    # Predict
-    predictions = np.argmax(model_mlp.predict(test_x), axis=1)
-
-    # Accuracy and Confusion Matrix
-    acc = mlp_fit.history['acc'][-1]
-    print('\n MLP without Early Stopping: ')
-    print("\n")
-    print('accuracy = ', acc)
-    confusion_matrix_mlp = c_m(test_y.argmax(axis=1), predictions)
-    print("\n")
-    print('confusion_matrix = \n', confusion_matrix_mlp)
+            ## WITHOUT EARLYSTOPPING ##
 
 
+
+        # Compile the model.
+        model_mlp.compile(
+            optimizer= keras.optimizers.Adam(lr = 0.001, clipnorm = 1),
+            loss="categorical_crossentropy",
+            metrics=["acc"],
+        )
+
+        # Train the model.
+        mlp_fit = model_mlp.fit(
+            train_x,
+            train_y,
+            validation_data = (test_x, test_y),
+            epochs = 200,
+            batch_size = 200,
+        )
+
+        plt.figure()
+        plt.plot(mlp_fit.history['loss'], label = 'Training')
+        plt.plot(mlp_fit.history['val_loss'], label = 'Validation')
+        plt.title('MLP with Early Stopping')
+        plt.xlabel('Epochs')
+        plt.ylabel('Loss')
+        plt.legend()
+        plt.show()
+
+        # Predict
+        predictions = np.argmax(model_mlp.predict(test_x), axis=1)
+        # Evaluate
+        val = model_mlp.evaluate(x=test_x, y=test_y)
+        # Accuracy and Confusion Matrix
+        acc = val[1]
+        print('\n MLP without Early Stopping: ')
+        print("\n")
+        print('accuracy = ', acc)
+        confusion_matrix_mlp = c_m(test_y.argmax(axis=1), predictions)
+        print("\n")
+        print('confusion_matrix = \n', confusion_matrix_mlp)
 
     #######
     # CNN #
