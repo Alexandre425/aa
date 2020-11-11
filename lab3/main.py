@@ -62,6 +62,7 @@ if __name__ == "__main__":
         try:    # Try loading the model
             model = keras.models.load_model("CNN")
             print("Loaded model from memory")
+            
         except: # If there is no model in memory
             print("Cannot find model, compiling")
             # Compile the model with an apropriate optimizer and loss function
@@ -99,6 +100,11 @@ if __name__ == "__main__":
         plt.plot(epochs, loss_hist[1], label="Validation loss")
         # Load the model from a checkpoint
         model = keras.models.load_model("CNN")
+        model.compile(
+            optimizer='adam',
+            loss='categorical_crossentropy',
+            metrics=['categorical_crossentropy', 'accuracy']
+        )
         # Evaluate and extract the validation loss, plotting it
         val = model.evaluate(x=test_x, y=test_y)
         plt.hlines(val[0], epochs[0], epochs[-1], label="Best val. loss")
