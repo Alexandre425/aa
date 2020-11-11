@@ -51,9 +51,9 @@ if __name__ == "__main__":
     if (ans == "f"):
         # Declare the model and all it's layers
         model = keras.models.Sequential([
-            ly.Conv2D(filters=16, kernel_size=3, input_shape=(28,28,1)),
+            ly.Conv2D(filters=16, kernel_size=3, activation='relu', input_shape=(28,28,1)),
             ly.MaxPool2D(pool_size=2),
-            ly.Conv2D(filters=16, kernel_size=3),
+            ly.Conv2D(filters=16, kernel_size=3, activation='relu'),
             ly.MaxPool2D(pool_size=2),
             ly.Flatten(),
             ly.Dense(units=32, activation='relu'), 
