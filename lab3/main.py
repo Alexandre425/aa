@@ -106,6 +106,7 @@ if __name__ == "__main__":
         epochs = range(len(loss_hist[0]))
         plt.plot(epochs, loss_hist[0], label="Loss")
         plt.plot(epochs, loss_hist[1], label="Validation loss")
+        plt.plot(epochs, loss_hist[2], label="Accuracy")
         # Load the model from a checkpoint
         model = keras.models.load_model("CNN")
         model.compile(
@@ -117,8 +118,8 @@ if __name__ == "__main__":
         val = model.evaluate(x=test_x, y=test_y)
         plt.hlines(val[0], epochs[0], epochs[-1], label="Best val. loss")
         plt.xlabel("Epoch")
-        plt.ylabel("Categ. Crossentropy")
-        plt.title("Evolution of the loss throughout epochs")
+        plt.ylabel("Metric")
+        plt.title("Evolution of the metrics through epochs")
         plt.legend()
         plt.show()
 
