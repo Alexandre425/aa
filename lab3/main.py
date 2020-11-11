@@ -68,7 +68,7 @@ if __name__ == "__main__":
             model.compile(
                 optimizer='adam',
                 loss='categorical_crossentropy',
-                metrics='categorical_crossentropy'
+                metrics=['categorical_crossentropy', 'accuracy']
             )
 
         callbacks = [
@@ -109,7 +109,7 @@ if __name__ == "__main__":
         plt.show()
 
         # Plot the activation for an example image
-        test_img = np.reshape(test_x[7], (28,28))
+        test_img = np.reshape(test_x[9], (28,28))
         visualize_activations(model, [0,2], test_img)
 
     else:
