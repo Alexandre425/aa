@@ -3,6 +3,7 @@ from tensorflow import keras as keras
 from tensorflow.keras import layers as ly
 import numpy as np
 from matplotlib import pyplot as plt
+from visualize_activations import visualize_activations
 
 FILE_TRAIN_X = "train_x.npy"
 FILE_TRAIN_Y = "train_y.npy"
@@ -91,8 +92,25 @@ if __name__ == "__main__":
 
 
     elif (ans == "e"):
+        # Plot the history of the loss
+        loss_hist = np.loadtxt("cnn_history")
+        epochs = range(len(loss_hist[0]))
+        plt.plot(epochs, loss_hist[0], label="Loss")
+        plt.plot(epochs, loss_hist[1], label="Validation loss")
+        # Load the model from a checkpoint
         model = keras.models.load_model("CNN")
-        model.evaluate(x=test_x, y=test_y)
+        # Evaluate and extract the validation loss, plotting it
+        val = model.evaluate(x=test_x, y=test_y)
+        plt.hlines(val[0], epochs[0], epochs[-1], label="Best val. loss")
+        plt.xlabel("Epoch")
+        plt.ylabel("Categ. Crossentropy")
+        plt.title("Evolution of the loss throughout epochs")
+        plt.legend()
+        plt.show()
+
+        # Plot the activation for an example image
+        test_img = np.reshape(test_x[7], (28,28))
+        visualize_activations(model, [0,2], test_img)
 
     else:
         print("Skipping...")
