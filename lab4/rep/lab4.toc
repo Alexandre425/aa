@@ -1,0 +1,5 @@
+\contentsline {chapter}{\numberline {1}Classificador de Bayes}{2}%
+\contentsline {chapter}{\numberline {2}Exemplo}{3}%
+\contentsline {chapter}{\numberline {3}Reconhecimento de Linguagem}{4}%
+\contentsline {section}{\numberline {3.1}Geração da matriz de treino}{4}%
+\contentsline {section}{\numberline {3.2}Treino e teste}{4}%

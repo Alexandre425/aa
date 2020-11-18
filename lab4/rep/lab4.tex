@@ -1,0 +1,98 @@
+\documentclass[a4paper,2pt]{report}
+
+\usepackage[a4paper, total={6in, 9in}]{geometry}
+\usepackage[table,xcdraw]{xcolor}
+\usepackage{pdfpages}
+\usepackage{indentfirst}
+\usepackage{mathtools}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{subfig}
+\usepackage{multirow}
+
+\graphicspath{ {./img/} }
+
+
+\setlength{\parskip}{6pt}
+
+\begin{document}
+
+\begin{titlepage}
+    \begin{center}
+        \vspace*{3cm}
+ 
+        \LARGE
+        \textbf{Instituto Superior Técnico}
+        \vskip 0.4cm
+ 
+        \Large{MEEC}
+        \vskip 0.2cm
+
+        \Large{Aprendizagem Automática}
+        \vskip 3cm
+        
+
+ 
+        \Huge{\textbf{Lab 4}}
+        \vskip 0.5cm
+
+        \huge{\textbf{Bayes Classifier}}
+        \vskip 0.5cm
+
+ 
+        \vfill
+ 
+        \large
+        \textbf{Grupo 9}\\
+        \vspace{0.3cm}
+        Manuel Diniz, 84125\\
+        Alexandre Rodrigues, 90002\\
+        
+        \vspace{1cm}
+
+        \textbf{Turno:} 4ªf 11h00
+
+    \end{center}
+\end{titlepage}
+
+\tableofcontents
+\newpage
+
+\chapter{Classificador de Bayes}
+
+\chapter{Exemplo}
+
+\chapter{Reconhecimento de Linguagem}
+
+    \par É agora aplicado um \textit{naive Bayes classifier} a texto, de modo a se fazer o reconhecimento da linguagem em que este está escrito. O conjunto de treino é um conjunto de trigramas e o respetivo número de ocorrências nos textos originais.
+
+    \section{Geração da matriz de treino}
+        \par A partir dos dados, é gerada uma matriz de treino, com uma amostra (neste caso uma linguagem) em cada linha, e uma \textit{feature} (neste caso, o número de ocorrências de um determinado trigrama) por coluna. Gera-se também um vetor com as \textit{labels} corretas correspondentes às amostras.
+
+    \section{Treino e teste}
+        \par De seguida, o modelo é treinado e testado com os mesmos dados de treino, verificando que atribui a linguagem correta a cada conjunto de treino.
+        \par Testa-se agora o modelo em 6 frases fornecidas. Estas são processadas de modo a serem decompostas nos seus trigramas, e gera-se um vetor linha com o mesmo formato dos dados de treino, ou seja, com o número de ocorrências de cada trigrama em cada coluna (fazendo correspondência posicional entre os trigramas obtidos e os do conjunto de treno). Os resultados da previsão neste conjunto de dados estão na tabela
+
+        \begin{table}[H]
+            \centering
+            \begin{tabular}{|
+            >{\columncolor[HTML]{C0C0C0}}l |c|c|c|c|}
+            \hline
+            \multicolumn{1}{|c|}{\cellcolor[HTML]{C0C0C0}Texto} & \cellcolor[HTML]{C0C0C0}\begin{tabular}[c]{@{}c@{}}Linguagem\\ real\end{tabular} & \cellcolor[HTML]{C0C0C0}\begin{tabular}[c]{@{}c@{}}Linguagem\\ reconhecida\end{tabular} & \cellcolor[HTML]{C0C0C0}\textit{Score} & \cellcolor[HTML]{C0C0C0}\begin{tabular}[c]{@{}c@{}}Margem de\\ classificação\end{tabular} \\ \hline
+            Que fácil es comer peras. & es & es & 0.6703 & 0.3407 \\ \hline
+            Que fácil é comer peras. & pt & pt & 0.9999 & 0.9999 \\ \hline
+            Today is a great day for sightseeing. & en & en & 1.0000 & 1.0000 \\ \hline
+            Je vais au cinéma demain soir. & fr & fr & 0.9999 & 0.9999 \\ \hline
+            Ana es inteligente y simpática. & es & es & 0.9999 & 0.9999 \\ \hline
+            Tu vais à escola hoje & pt & fr & 0.7930 & 0.5861 \\ \hline
+            \end{tabular}
+        \end{table}
+
+        \par Todas as frases são identificadas corretamente com a exceção da última. A primeira é identificada com um \textit{score} modesto, pois não existem traços fortes que a língua em questão seja espanhol e não português. A única diferença que a frase tem da seguinte é a palavra "es", forma os trigramas " es" e "es ", que também são bastante comuns na língua portuguesa ("estar" ou "antes", por exemplo).
+        \par O mesmo não é o caso na segunda frase, que tem um forte indicador da língua portuguesa, o trigrama " é ", que ocorre muito menos vezes no conjunto de treino espanhol. Deste modo, classifica a frase como português com uma confiança, ou \textit{score}, muito mais elevada.
+        \par Mais uma vez a terceira frase é classificada com elevada confiança, devido à presença de trigramas que são fortes indicadores da sua língua, como "ght" ou "day" neste caso.
+        \par A quarta frase também possui \textit{score} elevado, com um dos trigramas chave sendo "oir", muito comum no francês.
+        \par A quinta possui um trigrama quase do exclusivo do espanhol, " y ", sendo que também é classificada com elevada segurança.
+        \par A sexta e última frase é identificada incorretamente como francês, se bem que com um \textit{score} e margem de classificação reduzidos. Pode-se atribuir parcialmente à presença do trigrama " à ", que é muito comum no francês, para além de que quase todos os restantes trigramas são partilhados pelas duas linguagens de forma comum.
+
+\end{document}
