@@ -361,15 +361,13 @@ Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
 85.
 
 (/usr/share/texlive/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
-File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
-e
+File: epstopdf-sys.cfg 2010/07ist/tex/latex/latexconfig/epstopdf-sys.cfg
+File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Live
 ))
 \AtBeginShipoutBox=\box55
-
-(/usr/share/texlive/texmf-dist/tex/latex/pdflscape/pdflscape.sty
+ (/usr/share/texlive/texmf-dist/tex/latex/pdflscape/pdflscape.sty
 Package: pdflscape 2019/12/05 v0.12 Display of landscape pages in PDF (HO)
-
-(/usr/share/texlive/texmf-dist/tex/latex/graphics/lscape.sty
+ (/usr/share/texlive/texmf-dist/tex/latex/graphics/lscape.sty
 Package: lscape 2000/10/22 v3.01 Landscape Pages (DPC)
 )
 Package pdflscape Info: Auto-detected driver: pdftex on input line 81.
@@ -395,27 +393,33 @@ Chapter 2.
 
 ]
 Chapter 3.
-[4
 
-] [5] (./lab4.aux) ) 
+! LaTeX Error: Unknown float option `G'.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.76         \begin{table}[G]
+                             
+? 
+! Emergency stop.
+ ...                                              
+                                                  
+l.76         \begin{table}[G]
+                             
+Option `G' ignored and `p' used.
+
+ 
 Here is how much of TeX's memory you used:
- 5729 strings out of 483183
- 87037 string characters out of 5966292
- 343239 words of memory out of 5000000
- 20679 multiletter control sequences out of 15000+600000
+ 5724 strings out of 483183
+ 87199 string characters out of 5966292
+ 338239 words of memory out of 5000000
+ 20674 multiletter control sequences out of 15000+600000
  536811 words of font info for 39 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 50i,17n,48p,454b,278s stack positions out of 5000i,500n,10000p,200000b,80000s
- </home/alexandre/.texlive2019/texmf-var/fonts/pk/ljfour/jk
-nappen/ec/tcrm1200.600pk></usr/share/texlive/texmf-dist/fonts/type1/public/amsf
-onts/cm/cmbx10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/c
-m/cmbx12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr1
-0.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb><
-/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb>
-Output written on lab4.pdf (6 pages, 79805 bytes).
-PDF statistics:
- 48 PDF objects out of 1000 (max. 8388607)
- 33 compressed objects within 1 object stream
- 0 named destinations out of 1000 (max. 500000)
+ 50i,6n,48p,484b,170s stack positions out of 5000i,500n,10000p,200000b,80000s
+!  ==> Fatal error occurred, no output PDF file produced!
+inations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 
