@@ -1,5 +1,6 @@
 from tensorflow import keras
 import numpy as np
+from matplotlib import pyplot as plt
 
 def linear_predict (x, coefs):
     res = coefs[0]
@@ -45,6 +46,16 @@ if __name__ == "__main__":
             callbacks=[early_stop]
         )
         model.save("neural_net.mdl")
+        plt.figure()
+        plt.plot(fit.history['loss'], label = 'Custo de treino')
+        plt.plot(fit.history['val_loss'], label = 'Custo de validação')
+        plt.title('Treino da rede neuronal')
+        plt.xlabel('Épocas')
+        plt.ylabel('Erro absoluto médio')
+        plt.legend()
+        plt.show()
+
+
 
     print("Evaluating model")
     model.evaluate(x=test[0], y=test[1])
